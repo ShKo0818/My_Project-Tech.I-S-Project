@@ -32,7 +32,7 @@
         </select>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
         <label for="image"></label>
         <div>
             <!-- 現在の画像を表示（エラー回避のためコメントアウト） -->
@@ -43,9 +43,9 @@
                 <span>画像はありません</span>
             @endif
             -->
-        </div>
+        <!-- </div>
         <input type="file" class="form-control" id="image" name="image">
-    </div>
+    </div> --> -->
 
     <button type="submit" class="btn btn-success">更新する</button>
 </form>
