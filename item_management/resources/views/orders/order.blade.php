@@ -7,13 +7,6 @@
 @stop
 
 @section('content')
-    <!-- 成功メッセージ表示 -->
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <form action="{{ route('order.store') }}" method="POST">
         @csrf
 
@@ -68,4 +61,12 @@
 @stop
 
 @section('js')
+    <!-- 発注完了後のポップアップ -->
+    @if (session('success'))
+        <script>
+            window.onload = function() {
+                alert('発注完了しました！');
+            };
+        </script>
+    @endif
 @stop
