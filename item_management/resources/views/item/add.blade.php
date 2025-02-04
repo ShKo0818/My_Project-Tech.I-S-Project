@@ -28,17 +28,20 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="名前" required>
                         </div>
 
-                        <<div class="form-group">
-    <label for="category">カテゴリ</label>
-    <select name="category" id="category" class="form-control" required>
-    <option value="">選択してください</option>
-    @foreach($categories as $category)
-        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-            {{ $category->name }}
-        </option>
-    @endforeach
-</select>
-</div>
+                        <div class="form-group">
+                            <label for="category">カテゴリ</label>
+                            <select name="category_id" id="category" class="form-control" required>
+                                <option value="">選択してください</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <div class="form-group">
                             <label for="detail">詳細</label>
