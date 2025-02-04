@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-
 @section('title', '商品詳細')
 
 @section('content_header')
@@ -30,12 +29,16 @@
                     <button type="submit" class="btn btn-success">カートに追加</button>
                 </form>
 
-    @if($item->image)
-        <img src="{{ asset('storage/' . $item->image) }}" alt="Product Image" style="max-width: 50%; height: auto;">
-    @else
-        <p>画像がありません</p>
-    @endif
-</p>
+                <!-- 画像表示処理（エラーを吐かないようにコメントアウト） -->
+                <!--
+                @if($item->image)
+                    <img src="{{ asset('storage/' . $item->image) }}" alt="Product Image" style="max-width: 50%; height: auto;">
+                @else
+                    <p>画像がありません</p>
+                @endif
+                -->
+                <p>画像がありません</p>
+                </p>
 
                 
                 </div>

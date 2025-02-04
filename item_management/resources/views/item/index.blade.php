@@ -47,11 +47,15 @@
                                     <td><a href="{{ route('item.show', $item->id) }}">{{ $item->name }}</a></td>
                                     <td>{{ $item->category }}</td>
                                     <td>{{ $item->detail }}</td>
-                                    <td>@if ($item->image)
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="img-fluid" style="max-width: 200px;">
+                                    <td>
+                                        <!-- 画像表示処理（エラーを吐かないようにコメントアウト） -->
+                                        <!--
+                                        @if ($item->image)
+                                            <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="img-fluid" style="max-width: 200px;">
                                         @else
-                                        <p>画像がありません</p>
-                                       @endif
+                                            <p>画像がありません</p>
+                                        @endif
+                                        -->
                                     </td> <!-- 大きな画像表示 -->
                                     <td>
                                         @if ($item->price)

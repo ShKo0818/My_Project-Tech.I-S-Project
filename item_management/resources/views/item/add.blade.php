@@ -68,10 +68,13 @@
                             </div>
                         </div>
 
+                        <!-- 画像アップロード部分をコメントアウト -->
+                        <!--
                         <div class="form-group">
                             <label for="image">画像</label>
                             <input type="file" class="form-control" id="image" name="image">
                         </div>
+                        -->
 
                     </div>
 

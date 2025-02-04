@@ -35,8 +35,14 @@
     <div class="form-group">
         <label for="image">商品画像</label>
         <div>
-            <!-- 現在の画像を表示 -->
-            <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" width="150">
+            <!-- 現在の画像を表示（エラー回避のためコメントアウト） -->
+            <!--
+            @if($item->image)
+                <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" width="150">
+            @else
+                <span>画像はありません</span>
+            @endif
+            -->
         </div>
         <input type="file" class="form-control" id="image" name="image">
     </div>
