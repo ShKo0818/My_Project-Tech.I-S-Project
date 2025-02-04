@@ -33,7 +33,7 @@
             <input type="number" class="form-control" id="price" name="price" required min="0" placeholder="金額を入力(実際の商品管理の場合は原価設定なども必要ですが仮定の状況なので仮定)">
         </div>
 
-        <!-- カテゴリ選択 -->
+        <!-- カテゴリ選択
         <div class="form-group">
             <label for="category">カテゴリ</label>
             <select class="form-control" id="category" name="category" required>
@@ -43,7 +43,7 @@
                 <option value="flower">花</option>
                 <option value="other">その他</option>
             </select>
-        </div>
+        </div> -->
 
         <!-- メーカー名（法人ユーザーの名前を自動入力） -->
         <div class="form-group">
