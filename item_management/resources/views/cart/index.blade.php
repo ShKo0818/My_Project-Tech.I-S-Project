@@ -14,7 +14,6 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>商品画像</th>
                 <th>商品名</th>
                 <th>価格</th>
                 <th>数量</th>
@@ -27,14 +26,14 @@
             @foreach ($cart as $id => $item)
                 @php $subtotal = $item['price'] * $item['quantity']; @endphp
                 <tr>
-                    <!-- 画像が存在する場合に表示 -->
+                    <!-- 画像が存在する場合に表示
                     <td>
                         @if(isset($item['image']))
                             <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" width="50">
                         @else
                             <span>画像なし</span>
                         @endif
-                    </td>
+                    </td> -->
                     <td>{{ $item['name'] }}</td>
                     <td>¥{{ number_format($item['price']) }}</td>
                     <td>{{ $item['quantity'] }}</td>
