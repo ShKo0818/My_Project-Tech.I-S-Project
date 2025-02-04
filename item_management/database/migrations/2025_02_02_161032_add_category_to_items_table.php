@@ -11,16 +11,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->string('category')->after('name')->default('その他'); // 種別のデフォルトは「その他」
-        });
+        if (!Schema::hasColumn('items', 'category')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->string('category')->after('name')->default('その他'); // 種別のデフォルトは「その他」
+            });
+        }
     }
     
+    /**
+     * Reverse the migrations.
+     */
     public function down()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('category');
-        });
+        if (Schema::hasColumn('items', 'category')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->dropColumn('category');
+            });
+        }
     }
-    
 };
