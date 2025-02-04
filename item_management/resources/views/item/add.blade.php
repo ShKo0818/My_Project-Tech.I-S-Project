@@ -30,14 +30,14 @@
 
                         <<div class="form-group">
     <label for="category">カテゴリ</label>
-    <select name="category" id="category" class="form-control" required>
-        <option value="">選択してください</option>
-        @foreach($categories as $category)
-            <option value="{{ $category }}" {{ old('category') == $category ? 'selected' : '' }}>
-                {{ $category }}
-            </option>
-        @endforeach
-    </select>
+    <<select name="category" id="category" class="form-control" required>
+    <option value="">選択してください</option>
+    @foreach($categories as $category)
+        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+    @endforeach
+</select>
 </div>
 
                         <div class="form-group">
