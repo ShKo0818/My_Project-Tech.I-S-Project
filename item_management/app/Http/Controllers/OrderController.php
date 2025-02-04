@@ -54,32 +54,35 @@ class OrderController extends Controller
     }
 
     public function finalStore(Request $request)
-    {
-        // 発注確認後、実際の発注処理
-        $order = $request->session()->get('order');
+{
+    // 発注確認後、実際の発注処理
+    $order = $request->session()->get('order');
 
-        // 法人ユーザーのカテゴリをDBに登録（もし存在しない場合）
-        if (Auth::user()->user_type === 'corporate') {
-            $category = Category::firstOrCreate(['name' => $order['category']]);
-        } else {
-            $category = Category::find($order['category']);
-        }
-
-        // 注文データを保存
-        Order::create([
-            'user_id' => auth()->id(),
-            'item_id' => Item::where('name', $order['item_name'])->first()->id,
-            'name' => $order['item_name'],  // 追加：item_nameをnameフィールドとして挿入
-            'quantity' => $order['quantity'],
-            'price' => $order['price'],
-            'category_id' => $category->id,
-            'company_name' => Auth::user()->company_name,
-        ]);
-
-        // セッションから発注内容を削除
-        $request->session()->forget('order');
-
-        // 発注完了メッセージ
-        return redirect()->route('order.create')->with('success', '発注しました！');
+    // 法人ユーザーのカテゴリをDBに登録（もし存在しない場合）
+    if (Auth::user()->user_type === 'corporate') {
+        // カテゴリ名でカテゴリを取得（存在しない場合は作成）
+        $category = Category::firstOrCreate(['name' => $order['category']]);
+    } else {
+        // 既存カテゴリを使用
+        $category = Category::find($order['category']);
     }
+
+    // 注文データを保存
+    Order::create([
+        'user_id' => auth()->id(),
+        'item_id' => Item::where('name', $order['item_name'])->first()->id,
+        'name' => $order['item_name'],  // 追加：item_nameをnameフィールドとして挿入
+        'quantity' => $order['quantity'],
+        'price' => $order['price'],
+        'category_id' => $category->id, // category_idを挿入
+        'company_name' => Auth::user()->company_name,
+    ]);
+
+    // セッションから発注内容を削除
+    $request->session()->forget('order');
+
+    // 発注完了メッセージ
+    return redirect()->route('order.create')->with('success', '発注しました！');
+}
+
 }
