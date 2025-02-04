@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -44,8 +44,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $categories = Category::all(); // カテゴリ情報を取得
-        return view('item.create', compact('categories')); // フォーム表示
+        $categories = Category::all();
+        return view('item.create', compact('categories'));
     }
 
     /**
@@ -55,29 +55,31 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|exists:categories,id', // カテゴリIDでチェック
+            'category_id' => 'required|exists:categories,id',
             'detail' => 'nullable|string',
             'company_name' => 'nullable|string',
-            'price' => 'required|numeric|min:1', // 価格のバリデーション
+            'price' => 'required|numeric|min:1',
             'image' => 'nullable|image|max:2048',
         ]);
 
         // 画像アップロード処理
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('items', 'public');
-        } else {
-            $imagePath = null;
-        }
+        $imagePath = $request->hasFile('image') 
+            ? $request->file('image')->store('items', 'public') 
+            : null;
 
-        // データ保存
+        // `company_name` はマスターのみ変更可能
+        $companyName = Auth::user()->user_type === 'master' 
+            ? $request->company_name 
+            : Auth::user()->company_name;
+
         Item::create([
             'name' => $request->name,
-            'category_id' => $request->category, // カテゴリIDを保存
+            'category_id' => $request->category_id,
             'detail' => $request->detail,
-            'company_name' => $request->company_name,
-            'price' => $request->price, // 価格も保存
+            'company_name' => $companyName,
+            'price' => $request->price,
             'image' => $imagePath,
-            'user_id' => Auth::id(), // ユーザーIDを保存
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('item.index')->with('success', '商品が登録されました');
@@ -98,7 +100,7 @@ class ItemController extends Controller
     public function edit($id)
     {
         $item = Item::findOrFail($id);
-        $categories = Category::all(); // カテゴリ情報を取得
+        $categories = Category::all();
         return view('item.edit', compact('item', 'categories'));
     }
 
@@ -111,22 +113,21 @@ class ItemController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|exists:categories,id', // カテゴリIDでチェック
-            'price' => 'required|numeric|min:1', // 価格もバリデーションに追加
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:1',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // 画像の処理
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->storeAs('public/product_image', $request->file('image')->getClientOriginalName());
+            $imagePath = $request->file('image')->store('items', 'public');
             $item->image = $imagePath;
         }
 
-        // 商品データの更新
         $item->update([
             'name' => $request->name,
-            'category_id' => $request->category, // カテゴリIDを更新
-            'price' => $request->price, // 価格も更新
+            'category_id' => $request->category_id,
+            'price' => $request->price,
         ]);
 
         return redirect()->route('item.index')->with('success', '商品情報を更新しました！');
@@ -138,7 +139,11 @@ class ItemController extends Controller
     public function destroy($id)
     {
         $item = Item::findOrFail($id);
-        $item->delete();
-        return redirect()->route('item.index')->with('success', '商品が削除されました。');
+        try {
+            $item->delete();
+            return redirect()->route('item.index')->with('success', '商品が削除されました。');
+        } catch (\Exception $e) {
+            return redirect()->route('item.index')->with('error', '削除に失敗しました。');
+        }
     }
 }

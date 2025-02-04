@@ -28,19 +28,17 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="名前" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="category">カテゴリ</label>
-                            <select name="category" id="category" class="form-control" required>
-                                <option value="">選択してください</option>
-                                <option value="野菜" {{ old('category') == '野菜' ? 'selected' : '' }}>野菜</option>
-                                <option value="フルーツ" {{ old('category') == 'フルーツ' ? 'selected' : '' }}>フルーツ</option>
-                                <option value="花" {{ old('category') == '花' ? 'selected' : '' }}>花</option>
-                                <option value="その他観葉植物" {{ old('category') == 'その他観葉植物' ? 'selected' : '' }}>その他観葉植物</option>
-                                <option value="農業用品" {{ old('category') == '農業用品' ? 'selected' : '' }}>農業用品</option>
-                                <option value="園芸用品" {{ old('category') == '園芸用品' ? 'selected' : '' }}>園芸用品</option>
-                                <option value="その他" {{ old('category') == 'その他' ? 'selected' : '' }}>その他</option>
-                            </select>
-                        </div>
+                        <<div class="form-group">
+    <label for="category">カテゴリ</label>
+    <select name="category" id="category" class="form-control" required>
+        <option value="">選択してください</option>
+        @foreach($categories as $category)
+            <option value="{{ $category }}" {{ old('category') == $category ? 'selected' : '' }}>
+                {{ $category }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
                         <div class="form-group">
                             <label for="detail">詳細</label>
