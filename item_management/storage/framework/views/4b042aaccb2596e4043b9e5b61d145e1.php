@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', '買い物カゴ'); ?>
 
 <?php $__env->startSection('content_header'); ?>
@@ -14,7 +12,6 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>商品画像</th>
                 <th>商品名</th>
                 <th>価格</th>
                 <th>数量</th>
@@ -27,14 +24,14 @@
             <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php $subtotal = $item['price'] * $item['quantity']; ?>
                 <tr>
-                    <!-- 画像が存在する場合に表示 -->
+                    <!-- 画像が存在する場合に表示
                     <td>
                         <?php if(isset($item['image'])): ?>
                             <img src="<?php echo e($item['image']); ?>" alt="<?php echo e($item['name']); ?>" width="50">
                         <?php else: ?>
                             <span>画像なし</span>
                         <?php endif; ?>
-                    </td>
+                    </td> -->
                     <td><?php echo e($item['name']); ?></td>
                     <td>¥<?php echo e(number_format($item['price'])); ?></td>
                     <td><?php echo e($item['quantity']); ?></td>

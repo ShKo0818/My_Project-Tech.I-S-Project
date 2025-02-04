@@ -192,23 +192,11 @@ return [
         'icon' => 'fas fa-pen',
         //'can'  => 'is_corporate_or_master', // 法人ユーザーまたはマスターのみアクセス
     ],
-    [
-        'text' => '発注',
-        'url'  => 'order/create',
-        'icon' => 'fas fa-pen',
-        'can'  => 'is_corporate_or_master', // 法人ユーザーまたはマスターのみアクセス
-    ],
-    [
-        'text' => '買い物カゴ',
-        'url'  => 'item/cart',
-        'icon' => 'fas fa-shopping-cart',
-        'can'  => 'is_general', // 一般ユーザーのみアクセス
-    ],
+    
     [
         'text' => '商品購入カゴ',
         'url'  => 'item/cart',
         'icon' => 'fas fa-shopping-cart',
-        'can'  => 'is_corporate_or_master', // 法人・マスターのみアクセス
     ],
 ],
 

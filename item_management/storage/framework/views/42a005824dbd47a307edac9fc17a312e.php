@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', '商品登録'); ?>
 
 <?php $__env->startSection('content_header'); ?>
@@ -30,11 +28,15 @@
 
                         <div class="form-group">
                             <label for="category">カテゴリ</label>
-                            <select name="category" id="category" class="form-control" required>
+                            <select name="category" id="category" class="form-control" >
                                 <option value="">選択してください</option>
-                                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($category->name); ?>" <?php echo e(old('category') == $category->name ? 'selected' : ''); ?>><?php echo e($category->name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <option value="野菜" <?php echo e(old('category') == '野菜' ? 'selected' : ''); ?>>野菜</option>
+                                <option value="フルーツ" <?php echo e(old('category') == 'フルーツ' ? 'selected' : ''); ?>>フルーツ</option>
+                                <option value="花" <?php echo e(old('category') == '花' ? 'selected' : ''); ?>>花</option>
+                                <option value="その他観葉植物" <?php echo e(old('category') == 'その他観葉植物' ? 'selected' : ''); ?>>その他観葉植物</option>
+                                <option value="農業用品" <?php echo e(old('category') == '農業用品' ? 'selected' : ''); ?>>農業用品</option>
+                                <option value="園芸用品" <?php echo e(old('category') == '園芸用品' ? 'selected' : ''); ?>>園芸用品</option>
+                                <option value="その他" <?php echo e(old('category') == 'その他' ? 'selected' : ''); ?>>その他</option>
                             </select>
                         </div>
 
@@ -63,10 +65,13 @@
                             </div>
                         </div>
 
+                        <!-- 画像表示処理（エラーを吐かないようにコメントアウト） -->
+                        <!-- 
                         <div class="form-group">
                             <label for="image">画像</label>
                             <input type="file" class="form-control" id="image" name="image">
                         </div>
+                        -->
 
                     </div>
 

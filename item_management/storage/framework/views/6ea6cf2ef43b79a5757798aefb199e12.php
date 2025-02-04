@@ -3,6 +3,7 @@
 <head>
     <title>News</title>
 </head>
+<?php echo csrf_field(); ?>
 <body>
     <h2>最新情報</h2>
     

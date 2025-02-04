@@ -1,5 +1,7 @@
 <?php $__env->startSection('title', 'テックフルーツ　ホーム'); ?>
 
+<?php echo csrf_field(); ?>
+
 <?php $__env->startSection('content_header'); ?>
     <h1>テックフルーツへようこそ <?php echo e(Auth::user()->name); ?> さん　 会員データ：(<?php echo e(ucfirst(Auth::user()->user_type)); ?>)</h1>
     <div class="title">

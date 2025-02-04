@@ -46,13 +46,13 @@ Route::middleware('auth')->group(function () {
         Route::get('show/{id}', [ItemController::class, 'show'])->name('item.show');
     });
 
-    // 商品発注（認可機能を追加）
-    Route::prefix('order')->group(function () {
-        Route::get('create', [OrderController::class, 'create'])->name('order.create');
-        Route::post('store', [OrderController::class, 'store'])->name('order.store');
-        Route::get('confirm', [OrderController::class, 'confirm'])->name('order.confirm');
-        Route::post('final', [OrderController::class, 'finalStore'])->name('order.finalStore');
-    });
+    // // 商品発注（認可機能を追加）
+    // Route::prefix('order')->group(function () {
+    //     Route::get('create', [OrderController::class, 'create'])->name('order.create');
+    //     Route::post('store', [OrderController::class, 'store'])->name('order.store');
+    //     Route::get('confirm', [OrderController::class, 'confirm'])->name('order.confirm');
+    //     Route::post('final', [OrderController::class, 'finalStore'])->name('order.finalStore');
+    // });
 
     // ニュースページ
     Route::get('/news', function () {
