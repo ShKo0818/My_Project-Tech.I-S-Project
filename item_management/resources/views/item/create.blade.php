@@ -30,7 +30,7 @@
 
                         <div class="form-group">
                             <label for="category">カテゴリ</label>
-                            <select name="category" id="category" class="form-control" required>
+                            <select name="category" id="category" class="form-control" >
                                 <option value="">選択してください</option>
                                 <option value="野菜" {{ old('category') == '野菜' ? 'selected' : '' }}>野菜</option>
                                 <option value="フルーツ" {{ old('category') == 'フルーツ' ? 'selected' : '' }}>フルーツ</option>
