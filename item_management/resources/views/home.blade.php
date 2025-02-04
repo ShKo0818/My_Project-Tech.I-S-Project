@@ -2,6 +2,8 @@
 
 @section('title', 'テックフルーツ　ホーム')
 
+@csrf
+
 @section('content_header')
     <h1>テックフルーツへようこそ {{ Auth::user()->name }} さん　 会員データ：({{ ucfirst(Auth::user()->user_type) }})</h1>
     <div class="title">

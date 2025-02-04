@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 
+
 @section('title', '商品詳細')
 
 @section('content_header')

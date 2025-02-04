@@ -3,6 +3,7 @@
 <head>
     <title>News</title>
 </head>
+@csrf
 <body>
     <h2>最新情報</h2>
     
