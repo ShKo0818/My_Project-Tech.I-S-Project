@@ -7,6 +7,13 @@
 @stop
 
 @section('content')
+    <!-- 成功メッセージ表示 -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form action="{{ route('order.store') }}" method="POST">
         @csrf
 

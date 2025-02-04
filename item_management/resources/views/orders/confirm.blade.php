@@ -7,6 +7,13 @@
 @endsection
 
 @section('content')
+    <!-- 成功メッセージ表示 -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h4>以下の内容で発注してよろしいですか？</h4>
 
     <div class="form-group">
