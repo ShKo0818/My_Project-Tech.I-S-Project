@@ -31,7 +31,7 @@
         <!-- 発注数 -->
         <div class="form-group">
             <label for="quantity">発注数</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" required min="1" placeholder="発注数を入力（実際はメーカーによって１個から、１ダースからと違いがあるが仮定の状況なので仮定">
+            <input type="number" class="form-control" id="quantity" name="quantity" required min="1" placeholder="発注数を入力（実際はメーカーによって１個から、１ダースからと違いがあるが仮定の状況なので仮定）">
         </div>
 
         <!-- 金額 -->
