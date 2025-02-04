@@ -13,19 +13,20 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('quantity');
-            $table->string('category');
-            $table->text('detail')->nullable();
-            $table->string('company_name');
-            $table->date('delivery_date');
-            $table->string('image')->nullable();
+            $table->string('name'); // 商品名
+            $table->integer('quantity'); // 数量
+            $table->unsignedBigInteger('category_id'); // カテゴリID
+            $table->text('detail')->nullable(); // 詳細
+            $table->string('company_name'); // 会社名
+            $table->date('delivery_date'); // 配送日
+            $table->string('image')->nullable(); // 画像
             $table->timestamps();
+
+            // 外部キー制約を設定
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
     
-
-
     /**
      * Reverse the migrations.
      */
@@ -34,3 +35,4 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
+
