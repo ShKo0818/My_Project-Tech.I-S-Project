@@ -69,6 +69,7 @@ class OrderController extends Controller
         Order::create([
             'user_id' => auth()->id(),
             'item_id' => Item::where('name', $order['item_name'])->first()->id,
+            'name' => $order['item_name'],  // 追加：item_nameをnameフィールドとして挿入
             'quantity' => $order['quantity'],
             'price' => $order['price'],
             'category_id' => $category->id,
