@@ -55,7 +55,7 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|exists:categories,name', // カテゴリが存在するか名前でチェック
+            'category' => 'required|exists:categories,id', // カテゴリIDでチェック
             'detail' => 'nullable|string',
             'company_name' => 'nullable|string',
             'price' => 'required|numeric|min:1', // 価格のバリデーション
@@ -72,7 +72,7 @@ class ItemController extends Controller
         // データ保存
         Item::create([
             'name' => $request->name,
-            'category_id' => Category::where('name', $request->category)->first()->id, // カテゴリIDを取得して保存
+            'category_id' => $request->category, // カテゴリIDを保存
             'detail' => $request->detail,
             'company_name' => $request->company_name,
             'price' => $request->price, // 価格も保存
@@ -111,7 +111,7 @@ class ItemController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|exists:categories,name', // カテゴリが存在するか名前でチェック
+            'category' => 'required|exists:categories,id', // カテゴリIDでチェック
             'price' => 'required|numeric|min:1', // 価格もバリデーションに追加
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -125,7 +125,7 @@ class ItemController extends Controller
         // 商品データの更新
         $item->update([
             'name' => $request->name,
-            'category_id' => Category::where('name', $request->category)->first()->id, // カテゴリIDを更新
+            'category_id' => $request->category, // カテゴリIDを更新
             'price' => $request->price, // 価格も更新
         ]);
 
