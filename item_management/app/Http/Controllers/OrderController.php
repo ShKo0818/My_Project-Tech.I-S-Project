@@ -15,7 +15,8 @@ class OrderController extends Controller
         $items = Item::all();
     
         // 使用されたカテゴリ（商品に関連付けられているカテゴリ）を取得
-        $usedCategories = Item::distinct()->pluck('category_id');
+        $usedCategories = Item::select('category_id')->distinct()->pluck('category_id');
+
     
         // 使用されたカテゴリを取得（IDを使ってカテゴリ名を取得）
         $categories = Category::whereIn('id', $usedCategories)->get();
