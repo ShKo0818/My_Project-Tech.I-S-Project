@@ -190,7 +190,7 @@ return [
         'text' => '商品登録',
         'url'  => 'item/add',
         'icon' => 'fas fa-pen',
-        'can'  => 'is_corporate_or_master', // 法人ユーザーまたはマスターのみアクセス
+        //'can'  => 'is_corporate_or_master', // 法人ユーザーまたはマスターのみアクセス
     ],
     [
         'text' => '発注',
