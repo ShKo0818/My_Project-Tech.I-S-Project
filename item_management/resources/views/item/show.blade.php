@@ -16,7 +16,7 @@
                     <p><strong>詳細:</strong> {{ $item->detail }}</p>
                     <p><strong>メーカー名:</strong> {{ $item->company_name }}</p>
                     <p><strong>商品カテゴリ:</strong> {{ $item->category }}</p>
-                    <p><strong>画像:</strong>
+                
                     <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
                     <input type="hidden" name="item_id" value="{{ $item->id }}">
@@ -37,7 +37,7 @@
                     <p>画像がありません</p>
                 @endif
                 -->
-                <p>画像がありません</p>
+                
                 </p>
 
                 

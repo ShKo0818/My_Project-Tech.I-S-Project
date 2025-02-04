@@ -33,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        <label for="image">商品画像</label>
+        <label for="image"></label>
         <div>
             <!-- 現在の画像を表示（エラー回避のためコメントアウト） -->
             <!--
