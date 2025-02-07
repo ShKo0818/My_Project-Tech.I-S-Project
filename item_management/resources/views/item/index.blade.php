@@ -16,7 +16,7 @@
                     <!-- 商品検索フォーム -->
                     <form action="{{ route('item.index') }}" method="GET" class="mb-3">
                         <div class="input-group">
-                            <input type="text" name="keyword" class="form-control" placeholder="商品名を入力">
+                            <input type="text" name="keyword" class="form-control" placeholder="商品名を入力 法人、マスター会員が商品登録ページに登録した商品がここに表示されます。">
                             <select name="match" class="form-select">
                                 <option value="partial">あいまい検索</option>
                                 <option value="exact">完全一致</option>
