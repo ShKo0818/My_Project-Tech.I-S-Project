@@ -20,7 +20,7 @@
             @endif
 
             <div class="card card-primary">
-                <form method="POST" action="{{ route('item.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('item.store') }}" enctype="multipart/form-data" id="itemForm">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -44,7 +44,8 @@
 
                         <div class="form-group">
                             <label for="detail">詳細</label>
-                            <input type="text" class="form-control" id="detail" name="detail" placeholder="詳細説明">
+                            <input type="text" class="form-control" id="detail" name="detail" placeholder="詳細説明" maxlength="2000" oninput="checkDetailLength()">
+                            <small id="detailError" class="text-danger" style="display:none;">詳細は500文字以内で入力してください。</small>
                         </div>
 
                         <div class="form-group">
@@ -53,8 +54,9 @@
                             @if(Auth::user()->user_type === 'corporate')
                                 value="{{ Auth::user()->company_name }}" readonly
                             @else
-                                placeholder="メーカー名を入力"
+                                placeholder="メーカー名を入力" maxlength="30" oninput="checkCompanyNameLength()"
                             @endif>
+                            <small id="companyNameError" class="text-danger" style="display:none;">メーカー名は30文字以内で入力してください。</small>
                         </div>
 
                         <div class="form-group">
@@ -78,10 +80,42 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">登録</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton">登録</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        // 詳細が2000文字を超えていないかチェック
+        function checkDetailLength() {
+            const detail = document.getElementById('detail').value;
+            const detailError = document.getElementById('detailError');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (detail.length > 500) {
+                detailError.style.display = 'block';
+                submitButton.disabled = true; // ボタンを無効化
+            } else {
+                detailError.style.display = 'none';
+                submitButton.disabled = false; // ボタンを有効化
+            }
+        }
+
+        // メーカー名が30文字を超えていないかチェック
+        function checkCompanyNameLength() {
+            const companyName = document.getElementById('company_name').value;
+            const companyNameError = document.getElementById('companyNameError');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (companyName.length > 30) {
+                companyNameError.style.display = 'block';
+                submitButton.disabled = true; // ボタンを無効化
+            } else {
+                companyNameError.style.display = 'none';
+                submitButton.disabled = false; // ボタンを有効化
+            }
+        }
+    </script>
 @stop
