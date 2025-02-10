@@ -82,6 +82,8 @@ class ItemController extends Controller
             'user_id' => Auth::id(),
         ]);
 
+        dd($items); // デバッグ用
+
         return redirect()->route('item.index')->with('success', '商品が登録されました');
     }
 
