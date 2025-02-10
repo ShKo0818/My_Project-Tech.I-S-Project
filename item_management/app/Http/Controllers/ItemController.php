@@ -69,7 +69,7 @@ class ItemController extends Controller
             : null;
 
         // `company_name` はマスターのみ変更可能
-        $companyName = Auth::user()->user_type === 'master' 
+        $companyName = Auth::user()->user_type === 'master,corporate' 
             ? $request->company_name 
             : Auth::user()->company_name;
 
