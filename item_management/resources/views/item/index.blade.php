@@ -53,7 +53,7 @@
                                             @if (Auth::user()->user_type === 'master' || Auth::user()->company_name === $item->company_name)
                                                 <!-- 編集ボタン -->
                                                 <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-warning">編集</a>
-
+                                                
                                                 <!-- 削除ボタン -->
                                                 <form action="{{ route('item.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                                                     @csrf
@@ -63,7 +63,7 @@
                                             @endif
                                         @endif
 
-                                        <!-- カート追加フォーム -->
+                                        <!-- カート追加フォーム（常に表示） -->
                                         <form action="{{ route('cart.add') }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             <input type="hidden" name="item_id" value="{{ $item->id }}">
