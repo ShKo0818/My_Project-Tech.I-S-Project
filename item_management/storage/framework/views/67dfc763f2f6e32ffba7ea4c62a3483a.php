@@ -1,3 +1,5 @@
+  
+
 <?php $__env->startSection('title', '商品編集'); ?>
 
 <?php $__env->startSection('content_header'); ?>
@@ -39,14 +41,16 @@
 <?php $__env->stopSection(); ?>
 
 <script>
-// 元々の商品名を保持
-let originalName = document.getElementById('name').getAttribute('value');
+// 商品名の入力欄を取得
+const nameInput = document.getElementById('name');
+const priceInput = document.getElementById('price');
+const submitButton = document.getElementById('submitButton');
 
+// 商品名を入力したときにチェックを実行
 function checkNameLength() {
-    const name = document.getElementById('name').value;
+    const name = nameInput.value;
     const nameError = document.getElementById('nameError');
     const spaceError = document.getElementById('spaceError');
-    const submitButton = document.getElementById('submitButton');
 
     // 半角スペースと全角スペースの両方をチェック
     const spacePattern = /[\s\u3000]/;  // 半角または全角スペースを含むかどうかの正規表現
@@ -68,20 +72,17 @@ function checkNameLength() {
     }
 
     // 商品名が変更されて、スペースが含まれていない場合、ボタンを有効化
-    if (name !== originalName && !spacePattern.test(name) && name.length <= 30) {
-        submitButton.disabled = false; // 商品名にスペースが含まれていなければボタンを有効化
+    if (name.length <= 30 && !spacePattern.test(name)) {
+        checkPrice(); // 価格のチェックも行う
     } else {
         submitButton.disabled = true;
     }
-
-    checkPrice(); // 価格の確認も実行
 }
 
 // 価格が999,999円以上でないかチェック
 function checkPrice() {
-    const price = document.getElementById('price').value;
+    const price = priceInput.value;
     const priceError = document.getElementById('priceError');
-    const submitButton = document.getElementById('submitButton');
 
     if (price >= 1000000) {
         priceError.style.display = 'block';
@@ -91,7 +92,7 @@ function checkPrice() {
     }
 
     // 商品名の長さも再確認
-    const name = document.getElementById('name').value;
+    const name = nameInput.value;
     if (name.length <= 30 && price < 1000000 && !/[\s\u3000]/.test(name)) {
         submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
     }

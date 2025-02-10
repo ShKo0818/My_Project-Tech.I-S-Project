@@ -1,4 +1,4 @@
-@extends('adminlte::page') 
+@extends('adminlte::page')
 
 @section('title', '商品編集')
 
@@ -40,15 +40,12 @@
 @endsection
 
 <script>
-// 商品名の入力欄を取得
-const nameInput = document.getElementById('name');
-const submitButton = document.getElementById('submitButton');
-
-// 商品名を入力したときにチェックを実行
+// 商品名が30文字を超えていないかチェック
 function checkNameLength() {
-    const name = nameInput.value;
+    const name = document.getElementById('name').value;
     const nameError = document.getElementById('nameError');
     const spaceError = document.getElementById('spaceError');
+    const submitButton = document.getElementById('submitButton');
 
     // 半角スペースと全角スペースの両方をチェック
     const spacePattern = /[\s\u3000]/;  // 半角または全角スペースを含むかどうかの正規表現
@@ -69,8 +66,9 @@ function checkNameLength() {
         nameError.style.display = 'none';
     }
 
-    // 商品名が変更されて、スペースが含まれていない場合、ボタンを有効化
-    if (name.length <= 30 && !spacePattern.test(name)) {
+    // 商品名が変更され、スペースが含まれていない場合、ボタンを有効化
+    const originalName = document.getElementById('name').getAttribute('value');
+    if (name !== originalName && !spacePattern.test(name) && name.length <= 30) {
         submitButton.disabled = false; // 商品名にスペースが含まれていなければボタンを有効化
     } else {
         submitButton.disabled = true;
@@ -83,6 +81,7 @@ function checkNameLength() {
 function checkPrice() {
     const price = document.getElementById('price').value;
     const priceError = document.getElementById('priceError');
+    const submitButton = document.getElementById('submitButton');
 
     if (price >= 1000000) {
         priceError.style.display = 'block';
@@ -92,7 +91,7 @@ function checkPrice() {
     }
 
     // 商品名の長さも再確認
-    const name = nameInput.value;
+    const name = document.getElementById('name').value;
     if (name.length <= 30 && price < 1000000 && !/[\s\u3000]/.test(name)) {
         submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
     }
