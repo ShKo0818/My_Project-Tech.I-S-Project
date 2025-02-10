@@ -11,13 +11,15 @@
 
     <div class="form-group">
         <label for="name">商品名</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?php echo e($item->name); ?>" required>
-        <small id="detailError" class="text-danger" style="display:none;">商品名は30文字以内で入力してください</small>
+        <input type="text" class="form-control" id="name" name="name" value="<?php echo e($item->name); ?>" required oninput="checkNameLength()">
+        <small id="nameError" class="text-danger" style="display:none;">商品名は30文字以内で入力してください</small>
+        <small id="spaceError" class="text-danger" style="display:none;">商品名にスペースは含めないでください</small>
     </div>
 
     <div class="form-group">
         <label for="price">価格</label>
-        <input type="number" class="form-control" id="price" name="price" value="<?php echo e($item->price); ?>" required min="0">
+        <input type="number" class="form-control" id="price" name="price" value="<?php echo e($item->price); ?>" required min="0" oninput="checkPrice()">
+        <small id="priceError" class="text-danger" style="display:none;">価格は999,999円以内で入力してください</small>
     </div>
 
     <div class="form-group">
@@ -32,39 +34,55 @@
         </select>
     </div>
 
-    <!-- <div class="form-group">
-        <label for="image"></label>
-        <div>
-            <!-- 現在の画像を表示（エラー回避のためコメントアウト） -->
-            <!--
-            <?php if($item->image): ?>
-                <img src="<?php echo e(asset('storage/' . $item->image)); ?>" alt="商品画像" width="150">
-            <?php else: ?>
-                <span>画像はありません</span>
-            <?php endif; ?>
-            -->
-        <!-- </div>
-        <input type="file" class="form-control" id="image" name="image">
-    </div> --> -->
-
-    <button type="submit" class="btn btn-success">更新する</button>
+    <button type="submit" class="btn btn-success" id="submitButton" disabled>更新する</button>
 </form>
 <?php $__env->stopSection(); ?>
 
 <script>
-// メーカー名が30文字を超えていないかチェック
-        function checkCompanyNameLength() {
-            const companyName = document.getElementById('name').value;
-            const companyNameError = document.getElementById('NameError');
-            const submitButton = document.getElementById('submitButton');
-            
-            if (companyName.length > 30) {
-                companyNameError.style.display = 'block';
-                submitButton.disabled = true; // ボタンを無効化
-            } else {
-                companyNameError.style.display = 'none';
-                submitButton.disabled = false; // ボタンを有効化
-            }
-        }
+// 商品名が30文字を超えていないかチェック
+function checkNameLength() {
+    const name = document.getElementById('name').value;
+    const nameError = document.getElementById('nameError');
+    const spaceError = document.getElementById('spaceError');
+    const submitButton = document.getElementById('submitButton');
+
+    // スペースが含まれているか確認
+    if (name.includes(' ')) {
+        spaceError.style.display = 'block';
+        submitButton.disabled = true; // ボタンを無効化
+    } else {
+        spaceError.style.display = 'none';
+    }
+
+    // 商品名が30文字を超えていないかチェック
+    if (name.length > 30) {
+        nameError.style.display = 'block';
+        submitButton.disabled = true; // ボタンを無効化
+    } else {
+        nameError.style.display = 'none';
+        checkPrice(); // 価格の確認も実行
+    }
+}
+
+// 価格が999,999円以上でないかチェック
+function checkPrice() {
+    const price = document.getElementById('price').value;
+    const priceError = document.getElementById('priceError');
+    const submitButton = document.getElementById('submitButton');
+
+    if (price >= 1000000) {
+        priceError.style.display = 'block';
+        submitButton.disabled = true; // ボタンを無効化
+    } else {
+        priceError.style.display = 'none';
+    }
+
+    // 商品名の長さも再確認
+    const name = document.getElementById('name').value;
+    if (name.length <= 30 && price < 1000000) {
+        submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
+    }
+}
 </script>
+
 <?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laravel\pro-team-item-management-laravel10\item_management\resources\views/item/edit.blade.php ENDPATH**/ ?>
