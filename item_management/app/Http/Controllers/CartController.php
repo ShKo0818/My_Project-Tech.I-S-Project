@@ -97,9 +97,9 @@ class CartController extends Controller
     {
         // 入力内容をセッションに保存
         $request->validate([
-            'name' => 'required|string|max40',
-            'address' => 'required|string|max100',
-            'phone' => 'required|string|max20',
+            'name' => 'required|string|max:30', // 名前は30文字以内
+            'address' => 'required|string|max:100', // 住所は100文字以内
+            'phone' => 'required|string|max:20', // 電話番号は20文字以内
         ]);
 
         session([
