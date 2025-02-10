@@ -92,4 +92,5 @@ function checkForm() {
 // 初期状態でもチェックを実行（画面読み込み後にボタンを無効化するため）
 checkForm();
 </script>
+
 @endsection
