@@ -48,7 +48,7 @@ function checkNameLength() {
     const submitButton = document.getElementById('submitButton');
 
     // 半角スペースと全角スペースの両方をチェック
-    const spacePattern = /\s/;  // 半角または全角スペースを含むかどうかの正規表現
+    const spacePattern = /[\s\u3000]/;  // 半角または全角スペースを含むかどうかの正規表現
 
     // スペースが含まれているか確認
     if (spacePattern.test(name)) {
@@ -68,8 +68,8 @@ function checkNameLength() {
 
     // 商品名が変更され、スペースが含まれていない場合、ボタンを有効化
     const originalName = document.getElementById('name').getAttribute('value');
-    if (name !== originalName && !spacePattern.test(name)) {
-        submitButton.disabled = false;
+    if (name !== originalName && !spacePattern.test(name) && name.length <= 30) {
+        submitButton.disabled = false; // 商品名にスペースが含まれていなければボタンを有効化
     } else {
         submitButton.disabled = true;
     }
@@ -92,7 +92,7 @@ function checkPrice() {
 
     // 商品名の長さも再確認
     const name = document.getElementById('name').value;
-    if (name.length <= 30 && price < 1000000) {
+    if (name.length <= 30 && price < 1000000 && !/[\s\u3000]/.test(name)) {
         submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
     }
 }
