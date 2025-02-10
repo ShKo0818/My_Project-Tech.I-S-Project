@@ -103,6 +103,12 @@ class ItemController extends Controller
     {
         $item = Item::findOrFail($id);
 
+        // マスターユーザーは全商品を編集可能
+        if (Auth::user()->user_type === 'master') {
+            $categories = Category::all();
+            return view('item.edit', compact('item', 'categories'));
+        }
+
         // 法人ユーザーは自社商品のみ編集可能
         if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
             return redirect()->route('item.index')->with('error', '自社の商品のみ編集できます。');
@@ -119,8 +125,12 @@ class ItemController extends Controller
     {
         $this->authorize('update', $item);
 
+        // マスターユーザーは全商品を更新可能
+        if (Auth::user()->user_type === 'master') {
+            // 更新処理を続行
+        }
         // 法人ユーザーは自社商品のみ更新可能
-        if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
+        elseif (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
             return redirect()->route('item.index')->with('error', '自社の商品のみ更新できます。');
         }
 
@@ -165,6 +175,16 @@ class ItemController extends Controller
     public function destroy($id)
     {
         $item = Item::findOrFail($id);
+
+        // マスターユーザーは全商品を削除可能
+        if (Auth::user()->user_type === 'master') {
+            try {
+                $item->delete();
+                return redirect()->route('item.index')->with('success', '商品が削除されました。');
+            } catch (\Exception $e) {
+                return redirect()->route('item.index')->with('error', '削除に失敗しました。');
+            }
+        }
 
         // 法人ユーザーは自社商品のみ削除可能
         if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {

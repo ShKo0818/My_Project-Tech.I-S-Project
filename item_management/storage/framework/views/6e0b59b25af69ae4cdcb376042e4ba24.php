@@ -47,16 +47,18 @@
                                     <td>¥<?php echo e(number_format($item->price)); ?></td>
                                     <td><?php echo e($item->company_name); ?></td>
                                     <td>
-                                        <!-- 編集ボタン -->
-                                        <a href="<?php echo e(route('item.edit', $item->id)); ?>" class="btn btn-sm btn-warning">編集</a>
-                                        
-                                        <!-- 削除ボタン -->
-                                        <form action="<?php echo e(route('item.destroy', $item->id)); ?>" method="POST" style="display:inline-block;">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
-                                        </form>
-                                        
+                                        <?php if(Auth::user()->user_type !== 'general'): ?> 
+                                            <!-- 編集ボタン -->
+                                            <a href="<?php echo e(route('item.edit', $item->id)); ?>" class="btn btn-sm btn-warning">編集</a>
+                                            
+                                            <!-- 削除ボタン -->
+                                            <form action="<?php echo e(route('item.destroy', $item->id)); ?>" method="POST" style="display:inline-block;">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                                            </form>
+                                        <?php endif; ?>
+
                                         <!-- カート追加フォーム -->
                                         <form action="<?php echo e(route('cart.add')); ?>" method="POST" style="display:inline-block;">
                                             <?php echo csrf_field(); ?>
