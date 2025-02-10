@@ -15,6 +15,7 @@
         <label for="name">商品名</label>
         <input type="text" class="form-control" id="name" name="name" value="{{ $item->name }}" required oninput="checkNameLength()">
         <small id="nameError" class="text-danger" style="display:none;">商品名は30文字以内で入力してください</small>
+        <small id="spaceError" class="text-danger" style="display:none;">商品名にスペースは含めないでください</small>
     </div>
 
     <div class="form-group">
@@ -43,8 +44,18 @@
 function checkNameLength() {
     const name = document.getElementById('name').value;
     const nameError = document.getElementById('nameError');
+    const spaceError = document.getElementById('spaceError');
     const submitButton = document.getElementById('submitButton');
 
+    // スペースが含まれているか確認
+    if (name.includes(' ')) {
+        spaceError.style.display = 'block';
+        submitButton.disabled = true; // ボタンを無効化
+    } else {
+        spaceError.style.display = 'none';
+    }
+
+    // 商品名が30文字を超えていないかチェック
     if (name.length > 30) {
         nameError.style.display = 'block';
         submitButton.disabled = true; // ボタンを無効化
