@@ -110,7 +110,7 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
 
-        dd(auth()->user()); // ここでログインユーザー情報を確認
+        //dd(auth()->user()); // ここでログインユーザー情報を確認
 
         $this->authorize('update', $item);
 
