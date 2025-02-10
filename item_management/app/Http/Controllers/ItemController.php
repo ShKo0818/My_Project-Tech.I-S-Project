@@ -57,7 +57,7 @@ class ItemController extends Controller
             'category_id' => 'nullable|exists:categories,id|max:50',
             'detail' => 'required|string|max:10000',
             'company_name' => 'required|string|max:50',
-            'price' => 'required|numeric|min:1|max:999999',
+            'price' => 'required|numeric|min:1|max:10000',
             'image' => 'nullable|image|max:2048',
         ], [
             'name.max' => '商品名は30文字以内で入力してください', // エラーメッセージ追加
