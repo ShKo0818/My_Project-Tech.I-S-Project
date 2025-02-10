@@ -55,10 +55,10 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id|max:50',
+            'category_id' => 'nullable|exists:categories,id|max:50',
             'detail' => 'required|string|max:50',
             'company_name' => 'required|string|max:50',
-            'price' => 'required|numeric|min:1|max:50',
+            'price' => 'required|numeric|min:1',
             'image' => 'nullable|image|max:2048',
         ]);
 
