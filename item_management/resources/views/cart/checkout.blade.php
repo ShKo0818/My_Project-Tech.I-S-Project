@@ -29,8 +29,8 @@
         <!-- 電話番号 -->
         <div class="form-group">
             <label for="phone">電話番号</label>
-            <input type="text" id="phone" name="phone" class="form-control" required oninput="checkForm()" pattern="\d*" maxlength="30">
-            <small id="phoneError" class="text-danger" style="display:none;">電話番号は数字のみで、30文字以内で入力してください</small>
+            <input type="text" id="phone" name="phone" class="form-control" required oninput="checkForm()">
+            <small id="phoneError" class="text-danger" style="display:none;">電話番号は10〜12桁の数字で入力してください</small>
         </div>
 
         <!-- 注文確認ボタン -->
@@ -41,8 +41,8 @@
 <script>
 // フォームの入力値をチェックしてボタンを無効化/有効化
 function checkForm() {
-    const name = document.getElementById('name').value.trim();
-    const address = document.getElementById('address').value.trim();
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
     const phone = document.getElementById('phone').value;
     const submitButton = document.getElementById('submitButton');
     const nameError = document.getElementById('nameError');
@@ -65,16 +65,17 @@ function checkForm() {
         addressError.style.display = 'none';
     }
 
-    // 電話番号が30文字を超えていればエラー表示、数字以外が含まれている場合は無効化
-    if (phone.length > 30 || /\D/.test(phone)) {
+    // 電話番号が10〜12桁の数字か、数字以外が含まれていればエラー表示
+    const phoneRegex = /^\d{10,12}$/;
+    if (!phoneRegex.test(phone)) {
         phoneError.style.display = 'block';
         submitButton.disabled = true;
     } else {
         phoneError.style.display = 'none';
     }
 
-    // すべてのフィールドが制限内であればボタンを有効化
-    if (name.length <= 30 && address.length <= 30 && phone.length <= 30 && !/\s/.test(name) && !/\s/.test(address) && !/\D/.test(phone)) {
+    // すべての入力が制限を満たしていればボタンを有効化
+    if (name.length <= 30 && address.length <= 30 && phoneRegex.test(phone)) {
         submitButton.disabled = false;
     }
 }
