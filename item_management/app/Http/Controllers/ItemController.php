@@ -54,7 +54,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:330',
             'category_id' => 'nullable|exists:categories,id|max:50',
             'detail' => 'required|string|max:50',
             'company_name' => 'required|string|max:50',
@@ -115,7 +115,7 @@ class ItemController extends Controller
         $this->authorize('update', $item);
 
         $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:30',
             'category_id' => 'nullable|exists:categories,id|max:50',
             'price' => 'required|numeric|min:1|max:8',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
