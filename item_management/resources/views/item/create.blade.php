@@ -102,7 +102,7 @@
             const detailError = document.getElementById('detailError');
             const submitButton = document.getElementById('submitButton');
             
-            if (detail.length > 2000) {
+            if (detail.length > 100) {
                 detailError.style.display = 'block';
                 submitButton.disabled = true; // ボタンを無効化
             } else {
