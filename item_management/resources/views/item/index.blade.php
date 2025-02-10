@@ -49,16 +49,18 @@
                                     <td>¥{{ number_format($item->price) }}</td>
                                     <td>{{ $item->company_name }}</td>
                                     <td>
-                                        <!-- 編集ボタン -->
-                                        <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-warning">編集</a>
-                                        
-                                        <!-- 削除ボタン -->
-                                        <form action="{{ route('item.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
-                                        </form>
-                                        
+                                        @if (Auth::user()->user_type !== 'general') 
+                                            <!-- 編集ボタン -->
+                                            <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-warning">編集</a>
+                                            
+                                            <!-- 削除ボタン -->
+                                            <form action="{{ route('item.destroy', $item->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                                            </form>
+                                        @endif
+
                                         <!-- カート追加フォーム -->
                                         <form action="{{ route('cart.add') }}" method="POST" style="display:inline-block;">
                                             @csrf

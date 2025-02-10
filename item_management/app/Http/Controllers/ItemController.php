@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -69,7 +70,7 @@ class ItemController extends Controller
             : null;
 
         // `company_name` はマスターのみ変更可能
-        $companyName = Auth::user()->user_type === 'master,corporate' 
+        $companyName = Auth::user()->user_type === 'master' || Auth::user()->user_type === 'corporate' 
             ? $request->company_name 
             : Auth::user()->company_name;
 
@@ -101,6 +102,12 @@ class ItemController extends Controller
     public function edit($id)
     {
         $item = Item::findOrFail($id);
+
+        // 法人ユーザーは自社商品のみ編集可能
+        if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
+            return redirect()->route('item.index')->with('error', '自社の商品のみ編集できます。');
+        }
+
         $categories = Category::all();
         return view('item.edit', compact('item', 'categories'));
     }
@@ -111,6 +118,11 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         $this->authorize('update', $item);
+
+        // 法人ユーザーは自社商品のみ更新可能
+        if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
+            return redirect()->route('item.index')->with('error', '自社の商品のみ更新できます。');
+        }
 
         $request->validate([
             'name' => 'required|string|max:30|regex:/^[^\s]*$/', // 30文字以内に変更
@@ -153,6 +165,12 @@ class ItemController extends Controller
     public function destroy($id)
     {
         $item = Item::findOrFail($id);
+
+        // 法人ユーザーは自社商品のみ削除可能
+        if (Auth::user()->user_type === 'corporate' && $item->company_name !== Auth::user()->company_name) {
+            return redirect()->route('item.index')->with('error', '自社の商品のみ削除できます。');
+        }
+
         try {
             $item->delete();
             return redirect()->route('item.index')->with('success', '商品が削除されました。');
