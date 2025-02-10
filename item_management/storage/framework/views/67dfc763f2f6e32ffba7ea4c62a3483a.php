@@ -39,7 +39,9 @@
 <?php $__env->stopSection(); ?>
 
 <script>
-// 商品名が30文字を超えていないかチェック
+// 元々の商品名を保持
+let originalName = document.getElementById('name').getAttribute('value');
+
 function checkNameLength() {
     const name = document.getElementById('name').value;
     const nameError = document.getElementById('nameError');
@@ -65,8 +67,7 @@ function checkNameLength() {
         nameError.style.display = 'none';
     }
 
-    // 商品名が変更され、スペースが含まれていない場合、ボタンを有効化
-    const originalName = document.getElementById('name').getAttribute('value');
+    // 商品名が変更されて、スペースが含まれていない場合、ボタンを有効化
     if (name !== originalName && !spacePattern.test(name) && name.length <= 30) {
         submitButton.disabled = false; // 商品名にスペースが含まれていなければボタンを有効化
     } else {
