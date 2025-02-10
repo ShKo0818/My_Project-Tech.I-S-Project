@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -109,9 +109,6 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-
-        //dd(auth()->user()); // ここでログインユーザー情報を確認
-
         $this->authorize('update', $item);
 
         $request->validate([
@@ -141,7 +138,6 @@ class ItemController extends Controller
         if (empty(array_diff_assoc($updateData, $item->only(array_keys($updateData))))) {
             return redirect()->route('item.index')->with('info', '変更はありませんでした。');
         }
-        
 
         $item->update($updateData);
 
