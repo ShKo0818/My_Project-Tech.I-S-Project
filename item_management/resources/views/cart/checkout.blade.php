@@ -15,7 +15,8 @@
         <!-- 名前 -->
         <div class="form-group">
             <label for="name">お名前</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <input type="text" id="name" name="name" class="form-control" required oninput="checkForm()">
+            <small id="nameError" class="text-danger" style="display:none;">名前は40文字以内で入力してください</small>
         </div>
 
         <!-- 住所 -->
@@ -27,10 +28,43 @@
         <!-- 電話番号 -->
         <div class="form-group">
             <label for="phone">電話番号</label>
-            <input type="text" id="phone" name="phone" class="form-control" required>
+            <input type="text" id="phone" name="phone" class="form-control" required oninput="checkForm()">
+            <small id="phoneError" class="text-danger" style="display:none;">電話番号は20文字以内で入力してください</small>
         </div>
 
         <!-- 注文確認ボタン -->
-        <button type="submit" class="btn btn-primary">注文確認</button>
+        <button type="submit" class="btn btn-primary" id="submitButton" disabled>注文確認</button>
     </form>
 @stop
+
+<script>
+// フォームの入力値をチェックしてボタンを無効化/有効化
+function checkForm() {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const submitButton = document.getElementById('submitButton');
+    const nameError = document.getElementById('nameError');
+    const phoneError = document.getElementById('phoneError');
+
+    // 名前が40文字を超えていればエラー表示
+    if (name.length > 40) {
+        nameError.style.display = 'block';
+        submitButton.disabled = true;
+    } else {
+        nameError.style.display = 'none';
+    }
+
+    // 電話番号が20文字を超えていればエラー表示
+    if (phone.length > 20) {
+        phoneError.style.display = 'block';
+        submitButton.disabled = true;
+    } else {
+        phoneError.style.display = 'none';
+    }
+
+    // 両方の入力が制限を満たしていればボタンを有効化
+    if (name.length <= 40 && phone.length <= 20) {
+        submitButton.disabled = false;
+    }
+}
+</script>
