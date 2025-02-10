@@ -22,19 +22,14 @@
         <small id="priceError" class="text-danger" style="display:none;">価格は999,999円以内で入力してください</small>
     </div>
 
-    <div class="form-group">
-        <label for="category">カテゴリ</label>
-        <select class="form-control" id="category" name="category_id" required>
-            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option value="<?php echo e($category->id); ?>" <?php if($item->category_id == $category->id): ?> selected <?php endif; ?>>
-                    <?php echo e($category->name); ?>
-
-                </option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </select>
-    </div>
-
     <button type="submit" class="btn btn-success" id="submitButton" disabled>更新する</button>
+</form>
+
+<!-- 削除ボタン -->
+<form action="<?php echo e(route('item.destroy', $item->id)); ?>" method="POST" style="margin-top: 10px;">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('DELETE'); ?>
+    <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？');">削除する</button>
 </form>
 <?php $__env->stopSection(); ?>
 

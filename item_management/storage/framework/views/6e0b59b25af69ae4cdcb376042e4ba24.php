@@ -46,9 +46,19 @@
                                     <td><?php echo e($item->detail); ?></td>
                                     <td>¥<?php echo e(number_format($item->price)); ?></td>
                                     <td><?php echo e($item->company_name); ?></td>
-
                                     <td>
-                                        <form action="<?php echo e(route('cart.add')); ?>" method="POST">
+                                        <!-- 編集ボタン -->
+                                        <a href="<?php echo e(route('item.edit', $item->id)); ?>" class="btn btn-sm btn-warning">編集</a>
+                                        
+                                        <!-- 削除ボタン -->
+                                        <form action="<?php echo e(route('item.destroy', $item->id)); ?>" method="POST" style="display:inline-block;">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</button>
+                                        </form>
+                                        
+                                        <!-- カート追加フォーム -->
+                                        <form action="<?php echo e(route('cart.add')); ?>" method="POST" style="display:inline-block;">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="item_id" value="<?php echo e($item->id); ?>">
                                             <input type="hidden" name="name" value="<?php echo e($item->name); ?>">
@@ -64,7 +74,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
