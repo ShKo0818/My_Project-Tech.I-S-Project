@@ -47,7 +47,22 @@
                                     <td>{{ $item->category }}</td>
                                     <td>{{ $item->detail }}</td>
                                     <td>¥{{ number_format($item->price) }}</td>
-                                    <td>{{ $item->company_name }}</td>
+                                    <td>
+                                        {{ $item->company_name }}
+                                        <br> <!-- ここで改行を追加して、次にカート追加フォームが表示される -->
+                                        
+                                        <!-- カート追加フォーム（メーカー名の真下に表示） -->
+                                        <form action="{{ route('cart.add') }}" method="POST" style="display:inline-block; margin-top: 5px;">
+                                            @csrf
+                                            <input type="hidden" name="item_id" value="{{ $item->id }}">
+                                            <input type="hidden" name="name" value="{{ $item->name }}">
+                                            <input type="hidden" name="price" value="{{ $item->price }}">
+                                            <input type="hidden" name="image" value="{{ asset('storage/' . $item->image) }}">
+
+                                            <input type="number" name="quantity" value="1" min="1" class="form-control d-inline w-50">
+                                            <button type="submit" class="btn btn-sm btn-success">カートに追加</button>
+                                        </form>
+                                    </td>
                                     <td>
                                         @if (Auth::user()->user_type !== 'general') 
                                             @if (Auth::user()->user_type === 'master' || Auth::user()->company_name === $item->company_name)
@@ -62,18 +77,6 @@
                                                 </form>
                                             @endif
                                         @endif
-
-                                        <!-- カート追加フォーム（常に表示） -->
-                                        <form action="{{ route('cart.add') }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-                                            <input type="hidden" name="name" value="{{ $item->name }}">
-                                            <input type="hidden" name="price" value="{{ $item->price }}">
-                                            <input type="hidden" name="image" value="{{ asset('storage/' . $item->image) }}">
-
-                                            <input type="number" name="quantity" value="1" min="1" class="form-control d-inline w-50">
-                                            <button type="submit" class="btn btn-sm btn-success">カートに追加</button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
