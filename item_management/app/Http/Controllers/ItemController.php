@@ -58,7 +58,7 @@ class ItemController extends Controller
             'category_id' => 'nullable|exists:categories,id|max:50',
             'detail' => 'required|string|max:50',
             'company_name' => 'required|string|max:50',
-            'price' => 'required|numeric|min:1|max:8',
+            'price' => 'required|numeric|min:1|max:50',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -117,7 +117,7 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required|string|max:30',
             'category_id' => 'nullable|exists:categories,id|max:50',
-            'price' => 'required|numeric|min:1|max:8',
+            'price' => 'required|numeric|min:1|max:50',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
