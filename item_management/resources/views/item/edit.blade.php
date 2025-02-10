@@ -24,18 +24,14 @@
         <small id="priceError" class="text-danger" style="display:none;">価格は999,999円以内で入力してください</small>
     </div>
 
-    <!-- <div class="form-group">
-        <label for="category">カテゴリ</label>
-        <select class="form-control" id="category" name="category_id" required>
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}" @if($item->category_id == $category->id) selected @endif>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
-    </div> -->
-
     <button type="submit" class="btn btn-success" id="submitButton" disabled>更新する</button>
+</form>
+
+<!-- 削除ボタン -->
+<form action="{{ route('item.destroy', $item->id) }}" method="POST" style="margin-top: 10px;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？');">削除する</button>
 </form>
 @endsection
 
@@ -92,5 +88,4 @@ function checkForm() {
 // 初期状態でもチェックを実行（画面読み込み後にボタンを無効化するため）
 checkForm();
 </script>
-
 @endsection
