@@ -25,7 +25,8 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">名前</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="名前" required>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="名前" required maxlength="30" oninput="checkNameLength()">
+                            <small id="nameError" class="text-danger" style="display:none;">商品名は30文字以内で入力してください。</small>
                         </div>
 
                         <div class="form-group">
@@ -45,7 +46,7 @@
                         <div class="form-group">
                             <label for="detail">詳細</label>
                             <input type="text" class="form-control" id="detail" name="detail" placeholder="詳細説明" maxlength="2000" oninput="checkDetailLength()">
-                            <small id="detailError" class="text-danger" style="display:none;">詳細は500文字以内で入力してください。</small>
+                            <small id="detailError" class="text-danger" style="display:none;">詳細は2000文字以内で入力してください。</small>
                         </div>
 
                         <div class="form-group">
@@ -69,14 +70,6 @@
                             </div>
                         </div>
 
-                        <!-- 画像表示処理（エラーを吐かないようにコメントアウト） -->
-                        <!-- 
-                        <div class="form-group">
-                            <label for="image">画像</label>
-                            <input type="file" class="form-control" id="image" name="image">
-                        </div>
-                        -->
-
                     </div>
 
                     <div class="card-footer">
@@ -88,13 +81,28 @@
     </div>
 
     <script>
+        // 商品名が30文字を超えていないかチェック
+        function checkNameLength() {
+            const name = document.getElementById('name').value;
+            const nameError = document.getElementById('nameError');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (name.length > 30) {
+                nameError.style.display = 'block';
+                submitButton.disabled = true; // ボタンを無効化
+            } else {
+                nameError.style.display = 'none';
+                submitButton.disabled = false; // ボタンを有効化
+            }
+        }
+
         // 詳細が2000文字を超えていないかチェック
         function checkDetailLength() {
             const detail = document.getElementById('detail').value;
             const detailError = document.getElementById('detailError');
             const submitButton = document.getElementById('submitButton');
             
-            if (detail.length > 500) {
+            if (detail.length > 2000) {
                 detailError.style.display = 'block';
                 submitButton.disabled = true; // ボタンを無効化
             } else {

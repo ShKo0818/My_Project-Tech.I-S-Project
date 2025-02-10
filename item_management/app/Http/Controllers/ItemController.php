@@ -55,7 +55,7 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required|string|max:30',  // 30文字以内に変更
             'category_id' => 'nullable|exists:categories,id|max:50',
-            'detail' => 'required|string|max:10000',
+            'detail' => 'required|string|max:500',
             'company_name' => 'required|string|max:50',
             'price' => 'required|numeric|min:1|max:10000',
             'image' => 'nullable|image|max:2048',

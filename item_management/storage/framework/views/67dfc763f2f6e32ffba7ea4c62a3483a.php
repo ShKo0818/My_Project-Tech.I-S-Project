@@ -12,6 +12,7 @@
     <div class="form-group">
         <label for="name">商品名</label>
         <input type="text" class="form-control" id="name" name="name" value="<?php echo e($item->name); ?>" required>
+        <small id="detailError" class="text-danger" style="display:none;">商品名は30文字以内で入力してください</small>
     </div>
 
     <div class="form-group">
@@ -50,4 +51,20 @@
 </form>
 <?php $__env->stopSection(); ?>
 
+<script>
+// メーカー名が30文字を超えていないかチェック
+        function checkCompanyNameLength() {
+            const companyName = document.getElementById('name').value;
+            const companyNameError = document.getElementById('NameError');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (companyName.length > 30) {
+                companyNameError.style.display = 'block';
+                submitButton.disabled = true; // ボタンを無効化
+            } else {
+                companyNameError.style.display = 'none';
+                submitButton.disabled = false; // ボタンを有効化
+            }
+        }
+</script>
 <?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laravel\pro-team-item-management-laravel10\item_management\resources\views/item/edit.blade.php ENDPATH**/ ?>
