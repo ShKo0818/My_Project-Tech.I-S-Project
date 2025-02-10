@@ -138,9 +138,10 @@ class ItemController extends Controller
         ];
 
         // 変更がない場合はリダイレクト
-        if ($item->only(array_keys($updateData)) == $updateData) {
+        if (empty(array_diff_assoc($updateData, $item->only(array_keys($updateData))))) {
             return redirect()->route('item.index')->with('info', '変更はありませんでした。');
         }
+        
 
         $item->update($updateData);
 
