@@ -13,11 +13,11 @@ class ItemPolicy
     public function update(User $user, Item $item)
     {
         // マスター会員の場合は全ての更新を許可する
-        if ($user->user_type === 'master') {
+        if ($user->user_type === 'master,corporate') {
             return true;
         }
 
         // 通常のユーザーは、アイテムの所有者であれば更新できる
-        return $user->id === $item->user_id;
+        ////return $user->id === $item->user_id;
     }
 }
