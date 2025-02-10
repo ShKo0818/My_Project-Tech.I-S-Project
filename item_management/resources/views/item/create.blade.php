@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <label for="detail">詳細</label>
                             <input type="text" class="form-control" id="detail" name="detail" placeholder="詳細説明" maxlength="2000" oninput="checkDetailLength()">
-                            <small id="detailError" class="text-danger" style="display:none;">詳細は2000文字以内で入力してください。</small>
+                            <small id="detailError" class="text-danger" style="display:none;">詳細は100文字以内で入力してください。</small>
                         </div>
 
                         <div class="form-group">
