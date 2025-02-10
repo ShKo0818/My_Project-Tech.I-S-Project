@@ -1,4 +1,4 @@
-@extends('adminlte::page') 
+@extends('adminlte::page')
 
 @section('title', '商品編集')
 
@@ -9,7 +9,7 @@
 @section('content')
 <form action="{{ route('item.update', $item->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method('PATCH')  <!-- 'PUT' を 'PATCH' に変更 -->
+    @method('PATCH')
 
     <div class="form-group">
         <label for="name">商品名</label>
@@ -47,8 +47,11 @@ function checkNameLength() {
     const spaceError = document.getElementById('spaceError');
     const submitButton = document.getElementById('submitButton');
 
+    // 半角スペースと全角スペースの両方をチェック
+    const spacePattern = /\s/;  // 半角または全角スペースを含むかどうかの正規表現
+
     // スペースが含まれているか確認
-    if (name.includes(' ')) {
+    if (spacePattern.test(name)) {
         spaceError.style.display = 'block';
         submitButton.disabled = true; // ボタンを無効化
     } else {
@@ -63,13 +66,15 @@ function checkNameLength() {
         nameError.style.display = 'none';
     }
 
-    // 商品名が変更されていない場合ボタンを無効化
-    const originalName = "{{ $item->name }}";
-    if (name === originalName) {
-        submitButton.disabled = true;
+    // 商品名が変更され、スペースが含まれていない場合、ボタンを有効化
+    const originalName = document.getElementById('name').getAttribute('value');
+    if (name !== originalName && !spacePattern.test(name)) {
+        submitButton.disabled = false;
     } else {
-        checkPrice(); // 価格の確認も実行
+        submitButton.disabled = true;
     }
+
+    checkPrice(); // 価格の確認も実行
 }
 
 // 価格が999,999円以上でないかチェック
@@ -87,7 +92,7 @@ function checkPrice() {
 
     // 商品名の長さも再確認
     const name = document.getElementById('name').value;
-    if (name.length <= 30 && price < 1000000 && name !== "{{ $item->name }}") {
+    if (name.length <= 30 && price < 1000000) {
         submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
     }
 }

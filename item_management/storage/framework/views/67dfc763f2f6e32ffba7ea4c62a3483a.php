@@ -1,3 +1,5 @@
+ 
+
 <?php $__env->startSection('title', '商品編集'); ?>
 
 <?php $__env->startSection('content_header'); ?>
@@ -60,6 +62,13 @@ function checkNameLength() {
         submitButton.disabled = true; // ボタンを無効化
     } else {
         nameError.style.display = 'none';
+    }
+
+    // 商品名が変更されていない場合ボタンを無効化
+    const originalName = "<?php echo e($item->name); ?>";
+    if (name === originalName) {
+        submitButton.disabled = true;
+    } else {
         checkPrice(); // 価格の確認も実行
     }
 }
@@ -79,7 +88,7 @@ function checkPrice() {
 
     // 商品名の長さも再確認
     const name = document.getElementById('name').value;
-    if (name.length <= 30 && price < 1000000) {
+    if (name.length <= 30 && price < 1000000 && name !== "<?php echo e($item->name); ?>") {
         submitButton.disabled = false; // 両方の条件を満たせばボタンを有効化
     }
 }
