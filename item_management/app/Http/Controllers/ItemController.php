@@ -113,7 +113,7 @@ class ItemController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id|max:50',
             'price' => 'required|numeric|min:1',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -124,11 +124,22 @@ class ItemController extends Controller
             $item->image = $imagePath;
         }
 
-        $item->update([
+        // category_id が送信されていない場合は、現在の値を維持
+        $categoryId = $request->filled('category_id') ? $request->category_id : $item->category_id;
+
+        // 更新データの取得
+        $updateData = [
             'name' => $request->name,
-            'category_id' => $request->category_id,
+            'category_id' => $categoryId,
             'price' => $request->price,
-        ]);
+        ];
+
+        // 変更がない場合はリダイレクト
+        if ($item->only(array_keys($updateData)) == $updateData) {
+            return redirect()->route('item.index')->with('info', '変更はありませんでした。');
+        }
+
+        $item->update($updateData);
 
         return redirect()->route('item.index')->with('success', '商品情報を更新しました！');
     }
