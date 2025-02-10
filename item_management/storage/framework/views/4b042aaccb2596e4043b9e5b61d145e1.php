@@ -9,55 +9,51 @@
         <div class="alert alert-success"><?php echo e(session('success')); ?></div>
     <?php endif; ?>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>商品名</th>
-                <th>価格</th>
-                <th>数量</th>
-                <th>小計</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $total = 0; ?>
-            <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php $subtotal = $item['price'] * $item['quantity']; ?>
+    <?php if(count($cart) > 0): ?>
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <!-- 画像が存在する場合に表示
-                    <td>
-                        <?php if(isset($item['image'])): ?>
-                            <img src="<?php echo e($item['image']); ?>" alt="<?php echo e($item['name']); ?>" width="50">
-                        <?php else: ?>
-                            <span>画像なし</span>
-                        <?php endif; ?>
-                    </td> -->
-                    <td><?php echo e($item['name']); ?></td>
-                    <td>¥<?php echo e(number_format($item['price'])); ?></td>
-                    <td><?php echo e($item['quantity']); ?></td>
-                    <td>¥<?php echo e(number_format($subtotal)); ?></td>
-                    <td>
-                        <form action="<?php echo e(route('cart.remove')); ?>" method="POST">
-                            <?php echo csrf_field(); ?>
-                            <input type="hidden" name="item_id" value="<?php echo e($id); ?>">
-                            <button type="submit" class="btn btn-danger btn-sm">削除</button>
-                        </form>
-                    </td>
+                    <th>商品名</th>
+                    <th>価格</th>
+                    <th>数量</th>
+                    <th>小計</th>
+                    <th>操作</th>
                 </tr>
-                <?php $total += $subtotal; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php $total = 0; ?>
+                <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $subtotal = $item['price'] * $item['quantity']; ?>
+                    <tr>
+                        <td><?php echo e($item['name']); ?></td>
+                        <td>¥<?php echo e(number_format($item['price'])); ?></td>
+                        <td><?php echo e($item['quantity']); ?></td>
+                        <td>¥<?php echo e(number_format($subtotal)); ?></td>
+                        <td>
+                            <form action="<?php echo e(route('cart.remove')); ?>" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="item_id" value="<?php echo e($id); ?>">
+                                <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php $total += $subtotal; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </tbody>
+        </table>
 
-    <h3>合計: ¥<?php echo e(number_format($total)); ?></h3>
+        <h3>合計: ¥<?php echo e(number_format($total)); ?></h3>
 
-    <form action="<?php echo e(route('cart.clear')); ?>" method="POST">
-        <?php echo csrf_field(); ?>
-        <button type="submit" class="btn btn-warning">カートを空にする</button>
-    </form>
+        <form action="<?php echo e(route('cart.clear')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            <button type="submit" class="btn btn-warning">カートを空にする</button>
+        </form>
 
-    <a href="<?php echo e(route('cart.checkout')); ?>" class="btn btn-primary mt-3">購入手続きへ</a>
-
+        <a href="<?php echo e(route('cart.checkout')); ?>" class="btn btn-primary mt-3">購入手続きへ</a>
+    <?php else: ?>
+        <div class="alert alert-info">商品が登録されていません</div>
+        <button class="btn btn-primary mt-3" disabled>購入手続きへ</button>
+    <?php endif; ?>
 
 <?php $__env->stopSection(); ?>
 

@@ -19,32 +19,34 @@ class CartController extends Controller
     }
 
     /**
-     * カートに商品を追加 (メソッド名を `add` に統一)
+     * カートに商品を追加
      */
     public function add(Request $request)
     {
-        $id = $request->input('item_id'); // フォームから `item_id` を取得
+        $id = $request->input('item_id');
+        $quantity = (int) $request->input('quantity', 1); // フォームの数量を取得（デフォルト1）
         $item = Item::findOrFail($id);
 
         // セッションからカートを取得
         $cart = session()->get('cart', []);
 
-        // 商品が既にカートにある場合、数量を増やす
+        // 商品がすでにカートにある場合は数量を加算
         if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+            $cart[$id]['quantity'] += $quantity;
         } else {
-            // 商品がカートにない場合、新しく追加
+            // 新規追加
             $cart[$id] = [
                 'name' => $item->name,
-                'price' => $item->price ?? 0, // 価格が null の場合は 0 に
-                'quantity' => 1,
-                'image' => asset('storage/' . $item->image),  // 画像情報も追加
+                'price' => $item->price ?? 0, 
+                'quantity' => $quantity, // フォームの数量を適用
+                'image' => asset('storage/' . $item->image),
             ];
         }
 
+        // カートをセッションに保存
         session()->put('cart', $cart);
 
-        // カート合計金額の計算
+        // 合計金額を再計算
         $totalPrice = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         session()->put('cart_total', $totalPrice);
 
@@ -56,7 +58,7 @@ class CartController extends Controller
      */
     public function remove(Request $request)
     {
-        $id = $request->input('item_id'); // フォームから `item_id` を取得
+        $id = $request->input('item_id');
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
@@ -64,7 +66,7 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        // カート合計金額を再計算
+        // 合計金額を再計算
         $totalPrice = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         session()->put('cart_total', $totalPrice);
 
@@ -95,11 +97,10 @@ class CartController extends Controller
      */
     public function confirm(Request $request)
     {
-        // 入力内容をセッションに保存
         $request->validate([
-            'name' => 'required|string|max:30', // 名前は30文字以内
-            'address' => 'required|string|max:100', // 住所は100文字以内
-            'phone' => 'required|string|max:20', // 電話番号は20文字以内
+            'name' => 'required|string|max:30',
+            'address' => 'required|string|max:100',
+            'phone' => 'required|string|max:20',
         ]);
 
         session([
@@ -116,19 +117,14 @@ class CartController extends Controller
     }
 
     /**
-     * 注文処理（注文完了）
+     * 注文処理
      */
     public function placeOrder()
     {
-        // 注文処理（セッションからデータを取得して処理）
         $name = session('name');
         $address = session('address');
         $phone = session('phone');
 
-        // 注文処理のロジックをここに追加
-        // 例えば、注文をデータベースに保存したり、メールを送信する処理など
-
-        // 注文完了ページにリダイレクト
         return redirect()->route('cart.orderComplete');
     }
 

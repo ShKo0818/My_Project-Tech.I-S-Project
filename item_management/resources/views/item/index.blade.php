@@ -16,7 +16,7 @@
                     <!-- 商品検索フォーム -->
                     <form action="{{ route('item.index') }}" method="GET" class="mb-3">
                         <div class="input-group">
-                            <input type="text" name="keyword" class="form-control" placeholder="商品名を入力 法人、マスター会員が商品登録ページに登録した商品がここに表示されます。">
+                            <input type="text" name="keyword" class="form-control" placeholder="商品名を入力">
                             <select name="match" class="form-select">
                                 <option value="partial">あいまい検索</option>
                                 <option value="exact">完全一致</option>
@@ -34,9 +34,9 @@
                                 <th>名前</th>
                                 <th>種別</th>
                                 <th>詳細</th>
-                                <th>価格</th> <!-- 価格の列を追加 -->
+                                <th>価格</th>
                                 <th>メーカー名</th>
-                                <th>操作</th> <!-- 編集・削除の列を追加 -->
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,23 +46,7 @@
                                     <td><a href="{{ route('item.show', $item->id) }}">{{ $item->name }}</a></td>
                                     <td>{{ $item->category }}</td>
                                     <td>{{ $item->detail }}</td>
-                                    <td>
-                                        <!-- 画像表示処理（エラーを吐かないようにコメントアウト） -->
-                                        <!--
-                                        @if ($item->image)
-                                            <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="img-fluid" style="max-width: 200px;">
-                                        @else
-                                            <p>画像がありません</p>
-                                        @endif
-                                        -->
-                                    </td> <!-- 大きな画像表示 -->
-                                    <td>
-                                        @if ($item->price)
-                                            ¥{{ number_format($item->price) }} <!-- 価格表示 -->
-                                        @else
-                                            価格未設定
-                                        @endif
-                                    </td>
+                                    <td>¥{{ number_format($item->price) }}</td>
                                     <td>{{ $item->company_name }}</td>
 
                                     <td>
@@ -73,27 +57,9 @@
                                             <input type="hidden" name="price" value="{{ $item->price }}">
                                             <input type="hidden" name="image" value="{{ asset('storage/' . $item->image) }}">
 
-                                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 60px; display:inline;">
+                                            <input type="number" name="quantity" value="1" min="1" class="form-control d-inline w-50">
                                             <button type="submit" class="btn btn-sm btn-success">カートに追加</button>
                                         </form>
-                                    </td>
-                                    <td>
-                                        @php
-                                            $userType = auth()->user()->user_type; // ユーザーの種類を取得
-                                            $isOwner = auth()->user()->company_id === $item->company_id; // 法人ユーザーの場合、自社商品かどうか判定
-                                        @endphp
-
-                                        @if ($userType === 'master' || ($userType === 'corporate' && $isOwner))
-                                            <!-- 編集ボタン -->
-                                            <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-primary">編集</a>
-
-                                            <!-- 削除ボタン -->
-                                            <form action="{{ route('item.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">削除</button>
-                                            </form>
-                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
