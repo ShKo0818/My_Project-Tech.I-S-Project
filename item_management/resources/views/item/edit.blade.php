@@ -24,7 +24,7 @@
         <small id="priceError" class="text-danger" style="display:none;">価格は999,999円以内で入力してください</small>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
         <label for="category">カテゴリ</label>
         <select class="form-control" id="category" name="category_id" required>
             @foreach ($categories as $category)
@@ -33,7 +33,7 @@
                 </option>
             @endforeach
         </select>
-    </div>
+    </div> -->
 
     <button type="submit" class="btn btn-success" id="submitButton" disabled>更新する</button>
 </form>
