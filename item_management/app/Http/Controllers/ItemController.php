@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -54,12 +53,14 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:330',
+            'name' => 'required|string|max:30',  // 30文字以内に変更
             'category_id' => 'nullable|exists:categories,id|max:50',
             'detail' => 'required|string|max:10000',
             'company_name' => 'required|string|max:50',
             'price' => 'required|numeric|min:1|max:999999',
             'image' => 'nullable|image|max:2048',
+        ], [
+            'name.max' => '商品名は30文字以内で入力してください', // エラーメッセージ追加
         ]);
 
         // 画像アップロード処理
@@ -81,8 +82,6 @@ class ItemController extends Controller
             'image' => $imagePath,
             'user_id' => Auth::id(),
         ]);
-
-        ////dd($items); // デバッグ用
 
         return redirect()->route('item.index')->with('success', '商品が登録されました');
     }
@@ -114,10 +113,12 @@ class ItemController extends Controller
         $this->authorize('update', $item);
 
         $request->validate([
-            'name' => 'required|string|max:30',
+            'name' => 'required|string|max:30', // 30文字以内に変更
             'category_id' => 'nullable|exists:categories,id|max:50',
             'price' => 'required|numeric|min:1|max:999999',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'name.max' => '商品名は30文字以内で入力してください', // エラーメッセージ追加
         ]);
 
         // 画像の処理
