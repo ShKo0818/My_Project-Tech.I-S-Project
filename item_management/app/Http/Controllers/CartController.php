@@ -1,71 +1,142 @@
 <?php
-@extends('adminlte::page')
 
-@section('title', '購入手続き')
+namespace App\Http\Controllers;
 
-@section('content_header')
-    <h1>購入手続き</h1>
-@stop
+use Illuminate\Http\Request;
+use App\Models\Item;
 
-@section('content')
-    <p>こちらのページで必要情報をご記入のうえ、注文手続きを進めてください。</p>
+class CartController extends Controller
+{
+    /**
+     * カートを表示
+     */
+    public function index()
+    {
+        $cart = session()->get('cart', []);
+        $totalPrice = session()->get('cart_total', 0);
 
-    <form action="{{ route('cart.confirm') }}" method="POST">
-        @csrf
-
-        <!-- 名前 -->
-        <div class="form-group">
-            <label for="name">お名前</label>
-            <input type="text" id="name" name="name" class="form-control" required oninput="checkForm()">
-            <small id="nameError" class="text-danger" style="display:none;">名前は40文字以内で入力してください</small>
-        </div>
-
-        <!-- 住所 -->
-        <div class="form-group">
-            <label for="address">ご住所（都道府県、市町村、番地）</label>
-            <input type="text" id="address" name="address" class="form-control" placeholder="例: 東京都渋谷区1-2-3" required>
-        </div>
-
-        <!-- 電話番号 -->
-        <div class="form-group">
-            <label for="phone">電話番号</label>
-            <input type="text" id="phone" name="phone" class="form-control" required oninput="checkForm()">
-            <small id="phoneError" class="text-danger" style="display:none;">電話番号は20文字以内で入力してください</small>
-        </div>
-
-        <!-- 注文確認ボタン -->
-        <button type="submit" class="btn btn-primary" id="submitButton" disabled>注文確認</button>
-    </form>
-@stop
-
-<script>
-// フォームの入力値をチェックしてボタンを無効化/有効化
-function checkForm() {
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const submitButton = document.getElementById('submitButton');
-    const nameError = document.getElementById('nameError');
-    const phoneError = document.getElementById('phoneError');
-
-    // 名前が40文字を超えていればエラー表示
-    if (name.length > 40) {
-        nameError.style.display = 'block';
-        submitButton.disabled = true;
-    } else {
-        nameError.style.display = 'none';
+        return view('cart.index', compact('cart', 'totalPrice'));
     }
 
-    // 電話番号が20文字を超えていればエラー表示
-    if (phone.length > 20) {
-        phoneError.style.display = 'block';
-        submitButton.disabled = true;
-    } else {
-        phoneError.style.display = 'none';
+    /**
+     * カートに商品を追加 (メソッド名を `add` に統一)
+     */
+    public function add(Request $request)
+    {
+        $id = $request->input('item_id'); // フォームから `item_id` を取得
+        $item = Item::findOrFail($id);
+
+        // セッションからカートを取得
+        $cart = session()->get('cart', []);
+
+        // 商品が既にカートにある場合、数量を増やす
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            // 商品がカートにない場合、新しく追加
+            $cart[$id] = [
+                'name' => $item->name,
+                'price' => $item->price ?? 0, // 価格が null の場合は 0 に
+                'quantity' => 1,
+                'image' => asset('storage/' . $item->image),  // 画像情報も追加
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        // カート合計金額の計算
+        $totalPrice = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        session()->put('cart_total', $totalPrice);
+
+        return redirect()->route('cart.index')->with('success', '商品をカートに追加しました！');
     }
 
-    // 両方の入力が制限を満たしていればボタンを有効化
-    if (name.length <= 40 && phone.length <= 20) {
-        submitButton.disabled = false;
+    /**
+     * カート内の商品を削除
+     */
+    public function remove(Request $request)
+    {
+        $id = $request->input('item_id'); // フォームから `item_id` を取得
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        // カート合計金額を再計算
+        $totalPrice = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        session()->put('cart_total', $totalPrice);
+
+        return redirect()->route('cart.index')->with('success', '商品をカートから削除しました！');
+    }
+
+    /**
+     * カートを空にする
+     */
+    public function clear()
+    {
+        session()->forget('cart');
+        session()->forget('cart_total');
+
+        return redirect()->route('cart.index')->with('success', 'カートを空にしました！');
+    }
+
+    /**
+     * 購入手続きページ
+     */
+    public function checkout()
+    {
+        return view('cart.checkout');
+    }
+
+    /**
+     * 注文確認ページ
+     */
+    public function confirm(Request $request)
+    {
+        // 入力内容をセッションに保存
+        $request->validate([
+            'name' => 'required|string|max40',
+            'address' => 'required|string|max100',
+            'phone' => 'required|string|max20',
+        ]);
+
+        session([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+        ]);
+
+        return view('cart.confirm', [
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+        ]);
+    }
+
+    /**
+     * 注文処理（注文完了）
+     */
+    public function placeOrder()
+    {
+        // 注文処理（セッションからデータを取得して処理）
+        $name = session('name');
+        $address = session('address');
+        $phone = session('phone');
+
+        // 注文処理のロジックをここに追加
+        // 例えば、注文をデータベースに保存したり、メールを送信する処理など
+
+        // 注文完了ページにリダイレクト
+        return redirect()->route('cart.orderComplete');
+    }
+
+    /**
+     * 注文完了ページ
+     */
+    public function orderComplete()
+    {
+        return view('cart.orderComplete');
     }
 }
-</script>
